@@ -13,8 +13,8 @@ A **Calculadora de ICMS** é uma aplicação web simples desenvolvida em **React
 ## 🧮 Funcionalidades
 
 - Inserir o **valor da operação** em campo numérico.
-- Selecionar a **alíquota de ICMS** entre 4% ou 7%.
-- Calcular automaticamente o valor de ICMS devido com base no valor da operação e na alíquota escolhida.
+- Selecionar se o produto é **Nacional** ou **Importado**.
+- Calcular automaticamente o valor de ICMS devido com base no valor da operação e na origem do produto.
 - Resultado formatado de acordo com os padrões brasileiros (R$ com separadores de milhar e decimal).
 - Notificações interativas para casos de erro, como falta de preenchimento ou valores inválidos.
 
@@ -23,7 +23,7 @@ A **Calculadora de ICMS** é uma aplicação web simples desenvolvida em **React
 A aplicação é composta pelos seguintes elementos:
 
 1. **Campo de entrada para valor da operação**: Permite que o usuário insira o valor em reais.
-2. **Dropdown para seleção da alíquota de ICMS**: Opções de alíquotas disponíveis (4% ou 7%).
+2. **Dropdown para seleção de origem do produto**: Opções de origem de produto(Nacional ou Importado).
 3. **Botão de calcular**: Gera o cálculo e exibe o resultado.
 4. **Resultado da operação**: Exibido no formato monetário brasileiro (exemplo: `R$ 45.241,00`).
 
