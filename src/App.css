@@ -19,7 +19,7 @@
 
   .flex {
     flex-direction: column;
-    gap: 16px;
+    gap: 14px;
   }
 
   .w-160 {
@@ -28,5 +28,10 @@
 
   .w-80, .w-40 {
     width: 100%;
+  }
+
+  .select-trigger {
+    width: 100%;
+    flex-direction: row;
   }
 }

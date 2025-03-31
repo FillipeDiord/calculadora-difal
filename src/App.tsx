@@ -11,17 +11,21 @@ import {
 } from "@/components/Select";
 
 import { toast, ToastContainer } from "react-toastify";
+import { formatCurrencyInput } from "./utils";
+
 import "./App.css";
 
 function App() {
-  const [operationValue, setOperationValue] = useState<string | number>("");
+  const [operationValue, setOperationValue] = useState<string>("");
   const [icmsTaxRateValue, setIcmsTaxRateValue] = useState(0);
   const [originProduct, setOriginProduct] = useState("");
   const [operationResult, setOperationResult] = useState<number | null>(null);
 
   function calculateIcmsTaxRate() {
     try {
-      const value = Number(operationValue);
+      const value = parseFloat(
+        operationValue.replace(/\./g, "").replace(",", ".")
+      );
 
       if (isNaN(value) || value <= 0) {
         return toast.error("Coloque o valor da operação!");
@@ -61,16 +65,15 @@ function App() {
 
       <div className="flex flex-col items-center w-160 mb-8 gap-8">
         <div className="flex items-center w-full gap-6">
-          <Label>Valor da operação:</Label>
+          <Label>Valor da operação R$:</Label>
           <Input
-            type="number"
+            type="text"
             value={operationValue}
-            className="w-80 text-2xl"
-            onChange={(event) =>
-              setOperationValue(
-                event.target.value === "" ? "" : Number(event.target.value)
-              )
-            }
+            className="w-80"
+            onChange={(event) => {
+              const formattedValue = formatCurrencyInput(event.target.value);
+              setOperationValue(formattedValue);
+            }}
           />
         </div>
 
@@ -84,8 +87,8 @@ function App() {
             }}
             defaultValue={originProduct}
           >
-            <SelectTrigger className="w-40">
-              <SelectValue placeholder="" />
+            <SelectTrigger className="select-trigger w-40">
+              <SelectValue placeholder="Selecione uma opção" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="nacional">Nacional</SelectItem>
@@ -94,7 +97,7 @@ function App() {
           </Select>
         </div>
 
-        <div className="flex items-center w-full gap-10 mb-6">
+        <div className="flex items-center w-full gap-10">
           <Label>Alíquota de ICMS:</Label>
           <Label className="text-orange-700">{icmsTaxRateValue}%</Label>
         </div>
@@ -102,7 +105,7 @@ function App() {
 
       <Button
         variant="default"
-        className="cursor-pointer mb-10"
+        className="cursor-pointer mb-6"
         onClick={calculateIcmsTaxRate}
       >
         Calcular
@@ -111,7 +114,7 @@ function App() {
       <div className="flex gap-1 items-center">
         {operationResult !== null && operationResult !== 0 && (
           <Label className="text-2xl">
-            Resultado da Operação é de:{" "}
+            Resultado da Operação:{" "}
             <span className="text-green-800">
               {new Intl.NumberFormat("pt-BR", {
                 style: "currency",
@@ -123,6 +126,12 @@ function App() {
       </div>
 
       <ToastContainer />
+
+      <footer className="w-full text-center mt-auto py-4 bg-gray-100 text-gray-600 border-t absolute bottom-0">
+        Desenvolvido por{" "}
+        <span className="text-green-800 font-bold">Fillipe Diord 🧑🏻💻</span>. Todos
+        os direitos reservados &copy; {new Date().getFullYear()}.
+      </footer>
     </div>
   );
 }
