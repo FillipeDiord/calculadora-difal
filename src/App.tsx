@@ -65,7 +65,7 @@ function App() {
 
       <div className="flex flex-col items-center w-160 mb-8 gap-8">
         <div className="flex items-center w-full gap-6">
-          <Label>Valor da operação R$:</Label>
+          <Label>Valor da operação:</Label>
           <Input
             type="text"
             value={operationValue}
@@ -88,7 +88,7 @@ function App() {
             defaultValue={originProduct}
           >
             <SelectTrigger className="select-trigger w-40">
-              <SelectValue placeholder="Selecione uma opção" />
+              <SelectValue placeholder="" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="nacional">Nacional</SelectItem>
