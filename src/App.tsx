@@ -15,29 +15,27 @@ import "./App.css";
 
 function App() {
   const [operationValue, setOperationValue] = useState<string | number>("");
-  const [icmsTaxRateValue, setIcmsTaxRateValue] = useState("");
+  const [icmsTaxRateValue, setIcmsTaxRateValue] = useState(0);
+  const [originProduct, setOriginProduct] = useState("");
   const [operationResult, setOperationResult] = useState<number | null>(null);
 
   function calculateIcmsTaxRate() {
     try {
-      const valorOperacao = Number(operationValue);
-      const aliquotaICMS = Number(icmsTaxRateValue);
+      const value = Number(operationValue);
 
-      if (isNaN(valorOperacao) || valorOperacao <= 0) {
+      if (isNaN(value) || value <= 0) {
         return toast.error("Coloque o valor da operação!");
       }
 
-      if (isNaN(aliquotaICMS) || (aliquotaICMS !== 4 && aliquotaICMS !== 7)) {
-        return toast.error("Escolha uma alíquota válida de ICMS!");
-      }
-
-      if (aliquotaICMS === 7) {
-        setOperationResult(parseFloat((0.0449 * valorOperacao).toFixed(2)));
+      if (originProduct === "nacional") {
+        setOperationResult(parseFloat((0.0449 * value).toFixed(2)));
+        setIcmsTaxRateValue(7);
         return;
       }
 
-      if (aliquotaICMS === 4) {
-        setOperationResult(parseFloat((0.0787 * valorOperacao).toFixed(2)));
+      if (originProduct === "importado") {
+        setOperationResult(parseFloat((0.0787 * value).toFixed(2)));
+        setIcmsTaxRateValue(4);
         return;
       }
     } catch (error) {
@@ -46,37 +44,60 @@ function App() {
     }
   }
 
-  return (
-    <>
-      <h1>Calculadora de DIFAL</h1>
+  function showIcmsTaxRate(value: string | null = null) {
+    if (!value) {
+      return 0;
+    }
 
-      <div className="flex mb-10">
-        <Label>Qual é o valor da operação?</Label>
-        <Input
-          type="number"
-          value={operationValue}
-          onChange={(event) =>
-            setOperationValue(
-              event.target.value === "" ? "" : Number(event.target.value)
-            )
-          }
-        />
+    setIcmsTaxRateValue(value === "importado" ? 4 : 7);
+    return;
+  }
+
+  return (
+    <div className="flex items-center justify-center flex-col">
+      <div className="flex items-center justify-center mb-8">
+        <Label className="text-4xl">Calculadora de DIFAL</Label>
       </div>
 
-      <div className="flex gap-4 items-center mb-10">
-        <Label>Qual é a alíquota de ICMS?</Label>
-        <Select
-          onValueChange={(value) => setIcmsTaxRateValue(value)}
-          defaultValue={icmsTaxRateValue}
-        >
-          <SelectTrigger className="w-[160px]">
-            <SelectValue placeholder="" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="4">4%</SelectItem>
-            <SelectItem value="7">7%</SelectItem>
-          </SelectContent>
-        </Select>
+      <div className="flex flex-col items-center w-160 mb-8 gap-8">
+        <div className="flex items-center w-full gap-6">
+          <Label>Valor da operação:</Label>
+          <Input
+            type="number"
+            value={operationValue}
+            className="w-80 text-2xl"
+            onChange={(event) =>
+              setOperationValue(
+                event.target.value === "" ? "" : Number(event.target.value)
+              )
+            }
+          />
+        </div>
+
+        <div className="flex items-center w-full gap-6">
+          <Label>Origem do produto:</Label>
+          <Select
+            onValueChange={(value) => {
+              setOriginProduct(value);
+              showIcmsTaxRate(value);
+              setOperationResult(0);
+            }}
+            defaultValue={originProduct}
+          >
+            <SelectTrigger className="w-40">
+              <SelectValue placeholder="" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="nacional">Nacional</SelectItem>
+              <SelectItem value="importado">Importado</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="flex items-center w-full gap-10 mb-6">
+          <Label>Alíquota de ICMS:</Label>
+          <Label className="text-orange-700">{icmsTaxRateValue}%</Label>
+        </div>
       </div>
 
       <Button
@@ -88,19 +109,21 @@ function App() {
       </Button>
 
       <div className="flex gap-1 items-center">
-        {operationResult !== null && (
+        {operationResult !== null && operationResult !== 0 && (
           <Label className="text-2xl">
-            Resultado da Operação é de{" "}
-            {new Intl.NumberFormat("pt-BR", {
-              style: "currency",
-              currency: "BRL",
-            }).format(operationResult)}
+            Resultado da Operação é de:{" "}
+            <span className="text-green-800">
+              {new Intl.NumberFormat("pt-BR", {
+                style: "currency",
+                currency: "BRL",
+              }).format(operationResult)}
+            </span>
           </Label>
         )}
       </div>
 
       <ToastContainer />
-    </>
+    </div>
   );
 }
 
