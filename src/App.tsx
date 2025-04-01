@@ -13,8 +13,6 @@ import {
 import { toast, ToastContainer } from "react-toastify";
 import { formatCurrencyInput } from "./utils";
 
-import "./App.css";
-
 function App() {
   const [operationValue, setOperationValue] = useState<string>("");
   const [icmsTaxRateValue, setIcmsTaxRateValue] = useState(0);
@@ -58,14 +56,13 @@ function App() {
   }
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="flex-col items-center overflow-y-auto p-4">
-        <div className="flex items-center justify-center mb-8">
-          <Label className="text-4xl">Calculadora de DIFAL</Label>
-        </div>
-
-        <div className="flex flex-col items-center w-160 mb-8 gap-8">
-          <div className="flex items-center w-full gap-6">
+    <main className="absolute inset-0 flex h-screen flex-1 flex-col overflow-y-auto text-center">
+      <header className="flex-0 shrink-0 bg-gray-100 p-4 font-bold text-2xl">
+        Calculadora de DIFAL
+      </header>
+      <section className="flex items-center min-h-0 flex-1 flex-col justify-center space-y-4 overflow-y-auto">
+        <div className="flex flex-col items-center md:items-start justify-center md:gap-8 gap-4">
+          <div className="flex flex-col md:flex-row items-center gap-5">
             <Label>Valor da operação:</Label>
             <Input
               type="text"
@@ -77,8 +74,7 @@ function App() {
               }}
             />
           </div>
-
-          <div className="flex items-center w-full gap-6">
+          <div className="flex flex-col md:flex-row items-center gap-4">
             <Label>Origem do produto:</Label>
             <Select
               onValueChange={(value) => {
@@ -97,22 +93,21 @@ function App() {
               </SelectContent>
             </Select>
           </div>
-
-          <div className="flex items-center w-full gap-10">
+          <div className="flex flex-col md:flex-row items-center gap-8 mb-4 md:mb-6">
             <Label>Alíquota de ICMS:</Label>
             <Label className="text-orange-700">{icmsTaxRateValue}%</Label>
           </div>
         </div>
-
-        <Button
-          variant="default"
-          className="cursor-pointer mb-10"
-          onClick={calculateIcmsTaxRate}
-        >
-          Calcular
-        </Button>
-
-        <div className="flex gap-1 items-center mb-4">
+        <div>
+          <Button
+            variant="default"
+            className="cursor-pointer mb-2"
+            onClick={calculateIcmsTaxRate}
+          >
+            Calcular
+          </Button>
+        </div>
+        <div>
           {operationResult !== null && operationResult !== 0 && (
             <Label className="text-2xl">
               Resultado da Operação:{" "}
@@ -125,15 +120,22 @@ function App() {
             </Label>
           )}
         </div>
+      </section>
+      <footer className="flex-0 shrink-0 bg-gray-100 p-4 mt-0">
+        Desenvolvido por{" "}
+        <a
+          href="https://www.linkedin.com/in/fillipe-diord/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-green-800 font-bold hover:no-underline"
+        >
+          Fillipe Diord 🧑🏻💻
+        </a>
+        . Todos os direitos reservados &copy; {new Date().getFullYear()}.
+      </footer>
 
-        <footer className="flex-0 flex-shrink-0 bg-gray-100 text-gray-600 border-t">
-          Desenvolvido por{" "}
-          <span className="text-green-800 font-bold">Fillipe Diord 🧑🏻💻</span>.
-          Todos os direitos reservados &copy; {new Date().getFullYear()}.
-        </footer>
-      </div>
       <ToastContainer />
-    </div>
+    </main>
   );
 }
 
