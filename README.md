@@ -55,8 +55,3 @@ Siga os passos abaixo para rodar o projeto localmente:
   ```bash
     http://localhost:5173
   ```
-    
-**6**. Inicie o servidor de desenvolvimento:
-  ```bash
-    cd calculadora-difal
-  ```
