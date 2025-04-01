@@ -58,80 +58,81 @@ function App() {
   }
 
   return (
-    <div className="flex items-center justify-center flex-col">
-      <div className="flex items-center justify-center mb-8">
-        <Label className="text-4xl">Calculadora de DIFAL</Label>
-      </div>
-
-      <div className="flex flex-col items-center w-160 mb-8 gap-8">
-        <div className="flex items-center w-full gap-6">
-          <Label>Valor da operação:</Label>
-          <Input
-            type="text"
-            value={operationValue}
-            className="w-80"
-            onChange={(event) => {
-              const formattedValue = formatCurrencyInput(event.target.value);
-              setOperationValue(formattedValue);
-            }}
-          />
+    <div className="flex flex-col h-full">
+      <div className="flex-col items-center overflow-y-auto p-4">
+        <div className="flex items-center justify-center mb-8">
+          <Label className="text-4xl">Calculadora de DIFAL</Label>
         </div>
 
-        <div className="flex items-center w-full gap-6">
-          <Label>Origem do produto:</Label>
-          <Select
-            onValueChange={(value) => {
-              setOriginProduct(value);
-              showIcmsTaxRate(value);
-              setOperationResult(0);
-            }}
-            defaultValue={originProduct}
-          >
-            <SelectTrigger className="select-trigger w-40">
-              <SelectValue placeholder="" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="nacional">Nacional</SelectItem>
-              <SelectItem value="importado">Importado</SelectItem>
-            </SelectContent>
-          </Select>
+        <div className="flex flex-col items-center w-160 mb-8 gap-8">
+          <div className="flex items-center w-full gap-6">
+            <Label>Valor da operação:</Label>
+            <Input
+              type="text"
+              value={operationValue}
+              className="w-80"
+              onChange={(event) => {
+                const formattedValue = formatCurrencyInput(event.target.value);
+                setOperationValue(formattedValue);
+              }}
+            />
+          </div>
+
+          <div className="flex items-center w-full gap-6">
+            <Label>Origem do produto:</Label>
+            <Select
+              onValueChange={(value) => {
+                setOriginProduct(value);
+                showIcmsTaxRate(value);
+                setOperationResult(0);
+              }}
+              defaultValue={originProduct}
+            >
+              <SelectTrigger className="select-trigger w-40">
+                <SelectValue placeholder="" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="nacional">Nacional</SelectItem>
+                <SelectItem value="importado">Importado</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="flex items-center w-full gap-10">
+            <Label>Alíquota de ICMS:</Label>
+            <Label className="text-orange-700">{icmsTaxRateValue}%</Label>
+          </div>
         </div>
 
-        <div className="flex items-center w-full gap-10">
-          <Label>Alíquota de ICMS:</Label>
-          <Label className="text-orange-700">{icmsTaxRateValue}%</Label>
+        <Button
+          variant="default"
+          className="cursor-pointer mb-10"
+          onClick={calculateIcmsTaxRate}
+        >
+          Calcular
+        </Button>
+
+        <div className="flex gap-1 items-center mb-4">
+          {operationResult !== null && operationResult !== 0 && (
+            <Label className="text-2xl">
+              Resultado da Operação:{" "}
+              <span className="text-green-800">
+                {new Intl.NumberFormat("pt-BR", {
+                  style: "currency",
+                  currency: "BRL",
+                }).format(operationResult)}
+              </span>
+            </Label>
+          )}
         </div>
+
+        <footer className="flex-0 flex-shrink-0 bg-gray-100 text-gray-600 border-t">
+          Desenvolvido por{" "}
+          <span className="text-green-800 font-bold">Fillipe Diord 🧑🏻💻</span>.
+          Todos os direitos reservados &copy; {new Date().getFullYear()}.
+        </footer>
       </div>
-
-      <Button
-        variant="default"
-        className="cursor-pointer mb-6"
-        onClick={calculateIcmsTaxRate}
-      >
-        Calcular
-      </Button>
-
-      <div className="flex gap-1 items-center">
-        {operationResult !== null && operationResult !== 0 && (
-          <Label className="text-2xl">
-            Resultado da Operação:{" "}
-            <span className="text-green-800">
-              {new Intl.NumberFormat("pt-BR", {
-                style: "currency",
-                currency: "BRL",
-              }).format(operationResult)}
-            </span>
-          </Label>
-        )}
-      </div>
-
       <ToastContainer />
-
-      <footer className="w-full text-center mt-auto py-4 bg-gray-100 text-gray-600 border-t absolute bottom-0">
-        Desenvolvido por{" "}
-        <span className="text-green-800 font-bold">Fillipe Diord 🧑🏻💻</span>. Todos
-        os direitos reservados &copy; {new Date().getFullYear()}.
-      </footer>
     </div>
   );
 }

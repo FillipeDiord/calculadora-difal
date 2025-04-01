@@ -13,8 +13,9 @@
 @media (max-width: 768px) {
   #root {
     flex-direction: column;
-    padding: 1rem;
     text-align: center;
+    width: 100vw;
+    height: 100vh;
   }
 
   .flex {
@@ -26,7 +27,8 @@
     width: 100%;
   }
 
-  .w-80, .w-40 {
+  .w-80,
+  .w-40 {
     width: 100%;
   }
 
